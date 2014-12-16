@@ -1,6 +1,6 @@
 # Generic product
-PRODUCT_NAME := Linearboost
-PRODUCT_BRAND := Linearboost
+PRODUCT_NAME := Boostpop
+PRODUCT_BRAND := Boostpop
 PRODUCT_DEVICE := generic
 
 # Common build prop overrides 
@@ -14,46 +14,46 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.setupwizard.enterprise_mode=1 \
     keyguard.no_require_sim=true
 
-# Linearboost build prop
+# Boost build prop
 PRODUCT_PROPERTY_OVERRIDES += \
     pm.sleep.mode=1 \
     wifi.supplicant_scan_interval=300 
 
 # Proprietary latinime lib needed for swyping
 PRODUCT_COPY_FILES += \
-    vendor/Linearboost/prebuilt/lib/libjni_latinime.so:system/lib/libjni_latinime.so
+    vendor/boostpop/prebuilt/lib/libjni_latinime.so:system/lib/libjni_latinime.so
 
 # Include overlays
-PRODUCT_PACKAGE_OVERLAYS += vendor/Linearboost/overlays/common
+PRODUCT_PACKAGE_OVERLAYS += vendor/boostpop/overlays/common
 
 # Bring in camera effects
 PRODUCT_COPY_FILES += \
-    vendor/Linearboost/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
-    vendor/Linearboost/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd \
+    vendor/boostpop/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
+    vendor/boostpop/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd \
 
 # CDMA APN list
 PRODUCT_COPY_FILES += \
-    vendor/Linearboost/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
+    vendor/boostpop/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
 
 # Enable SIP+VoIP
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
 
-# init.d script support
-PRODUCT_COPY_FILES += \
-    vendor/Linearboost/prebuilt/bin/sysinit:system/bin/sysinit
-
 # Bootanimation support
 PRODUCT_COPY_FILES += \
-    vendor/Linearboost/prebuilt/system/media/bootanimation.zip:system/media/bootanimation.zip
+    vendor/boostpop/prebuilt/system/media/bootanimation.zip:system/media/bootanimation.zip
+
+# init.d script support
+PRODUCT_COPY_FILES += \
+    vendor/boostpop/prebuilt/bin/sysinit:system/bin/sysinit
 
 # SU Support
 PRODUCT_COPY_FILES += \
-    vendor/Linearboost/prebuilt/misc/UPDATE-SuperSU.zip:system/addon.d/UPDATE-SuperSU.zip \
-    vendor/Linearboost/prebuilt/etc/init.d/99SuperSUDaemon:system/etc/init.d/99SuperSUDaemon
+    vendor/boostpop/prebuilt/misc/UPDATE-SuperSU.zip:system/addon.d/UPDATE-SuperSU.zip \
+    vendor/boostpop/prebuilt/etc/init.d/99SuperSUDaemon:system/etc/init.d/99SuperSUDaemon
 
 # Gapps backup script
 PRODUCT_COPY_FILES += \
-    vendor/Linearboost/prebuilt/bin/backuptool.sh:system/bin/backuptool.sh \
-    vendor/Linearboost/prebuilt/bin/backuptool.functions:system/bin/backuptool.functions \
-    vendor/Linearboost/prebuilt/bin/50-backupScript.sh:system/addon.d/50-backupScript.sh 
+    vendor/boostpop/prebuilt/bin/backuptool.sh:system/bin/backuptool.sh \
+    vendor/boostpop/prebuilt/bin/backuptool.functions:system/bin/backuptool.functions \
+    vendor/boostpop/prebuilt/bin/50-backupScript.sh:system/addon.d/50-backupScript.sh 
