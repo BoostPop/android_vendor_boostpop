@@ -49,7 +49,7 @@ PRODUCT_COPY_FILES += \
 
 # SU Support
 PRODUCT_COPY_FILES += \
-    vendor/boostpop/prebuilt/misc/UPDATE-SuperSU.zip:system/addon.d/UPDATE-SuperSU.zip \
+    vendor/boostpop/prebuilt/misc/UPDATE-SuperSU.zip:system/addon.d/supersu/supersu.zip \
     vendor/boostpop/prebuilt/etc/init.d/99SuperSUDaemon:system/etc/init.d/99SuperSUDaemon
 
 # Gapps backup script
