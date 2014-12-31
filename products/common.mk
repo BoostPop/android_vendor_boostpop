@@ -3,6 +3,18 @@ PRODUCT_NAME := Boostpop
 PRODUCT_BRAND := Boostpop
 PRODUCT_DEVICE := generic
 
+# Version info
+ROM_VERSION_MAJOR := 2
+ROM_VERSION_MINOR := 1
+
+VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)
+
+export ROM_VERSION := $(VERSION)
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.modversion=$(ROM_VERSION) \
+    ro.boost.version=$(ROM_VERSION)
+
 # Common build prop overrides 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.dataroaming=false \
