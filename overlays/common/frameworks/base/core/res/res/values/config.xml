@@ -38,6 +38,7 @@
         <item>reboot</item>
         <item>airplane</item>
         <item>screenshot</item>
+	<item>silent</item>
     </string-array>
 
     <!-- Disable stock OTA components if installed -->
