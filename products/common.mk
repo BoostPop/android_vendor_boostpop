@@ -15,6 +15,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.modversion=$(ROM_VERSION) \
     ro.boost.version=$(ROM_VERSION)
 
+# Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
+TARGET_USES_BLOCK_BASED_OTA := false
+
 # Common build prop overrides 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.dataroaming=false \
