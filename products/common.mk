@@ -69,6 +69,6 @@ PRODUCT_COPY_FILES += \
 
 # Gapps backup script
 PRODUCT_COPY_FILES += \
-    vendor/boostpop/prebuilt/bin/backuptool.sh:system/bin/backuptool.sh \
-    vendor/boostpop/prebuilt/bin/backuptool.functions:system/bin/backuptool.functions \
+    vendor/boostpop/prebuilt/bin/backuptool.sh:install/bin/backuptool.sh \
+    vendor/boostpop/prebuilt/bin/backuptool.functions:install/bin/backuptool.functions \
     vendor/boostpop/prebuilt/bin/50-backupScript.sh:system/addon.d/50-backupScript.sh 
