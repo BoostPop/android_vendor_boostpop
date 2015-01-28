@@ -30,6 +30,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     net.tethering.noprovisioning=true \
     keyguard.no_require_sim=true
 
+# Thank you, please drive thru!
+PRODUCT_PROPERTY_OVERRIDES += persist.sys.dun.override=0
+
 # Boost build prop
 PRODUCT_PROPERTY_OVERRIDES += \
     pm.sleep.mode=1 \
