@@ -27,6 +27,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.wifi-watchlist=GoogleGuest \
     ro.error.receiver.system.apps=com.google.android.gms \
     ro.setupwizard.enterprise_mode=1 \
+    net.tethering.noprovisioning=true \
     keyguard.no_require_sim=true
 
 # Boost build prop
