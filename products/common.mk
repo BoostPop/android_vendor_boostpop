@@ -5,7 +5,7 @@ PRODUCT_DEVICE := generic
 
 # Version info
 ROM_VERSION_MAJOR := 2
-ROM_VERSION_MINOR := 7-beta
+ROM_VERSION_MINOR := 7
 
 VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)
 
@@ -16,7 +16,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.boost.version=$(ROM_VERSION)
 
 # Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
-TARGET_USES_BLOCK_BASED_OTA := true
+TARGET_USES_BLOCK_BASED_OTA := false
 
 # Common build prop overrides 
 PRODUCT_PROPERTY_OVERRIDES += \
