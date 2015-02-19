@@ -14,14 +14,24 @@
 #
 
 # Written for SaberMod toolchains
-# TARGET_SM_AND can be set before this file to override the default of gcc 4.8 for ROM.
+# TARGET_SM_AND and TARGET_SM_KERNEL can be set before this file, to override the default of gcc 4.8 for ROM.
 # This is to avoid hardcoding the gcc versions for the ROM and kernels.
+
+# Inherit sabermod configs.  Default to arm if TARGET_ARCH is not defined.
+ifndef TARGET_ARCH
+  $(warning ********************************************************************************)
+  $(warning *  TARGET_ARCH not defined, defaulting to arm.)
+  $(warning *  To use arm64 set TARGET_ARCH := arm64)
+  $(warning *  in device makefile before this file is called.)
+  $(warning ********************************************************************************)
+  TARGET_ARCH := arm
+endif
 
 ifndef TARGET_SM_AND
   $(warning ********************************************************************************)
   $(warning *  TARGET_SM_AND not defined.)
   $(warning *  Defaulting to gcc 4.8 for ROM.)
-  $(warning *  To change this set TARGET_SM_AND in device trees before common.mk is called.)
+  $(warning *  To change this set TARGET_SM_AND in device makefile before this file is called.)
   $(warning *  This is required for arm64 devices for the kernel TARGET_SM_KERNEL := SM-4.9)
   $(warning ********************************************************************************)
   TARGET_SM_AND := 4.8
@@ -32,7 +42,7 @@ ifdef TARGET_SM_KERNEL
 else
   $(warning ********************************************************************************)
   $(warning *  TARGET_SM_KERNEL not defined.)
-  $(warning *  This needs to be set in device trees before common.mk is called for inline kernel building.)
+  $(warning *  This needs to be set in device makefile before this file is called for inline kernel building.)
   $(warning *  Skipping kernel bits.)
   $(warning ********************************************************************************)
   TARGET_SM_KERNEL_DEFINED := false
@@ -102,6 +112,7 @@ ifeq ($(strip $(HOST_OS)),linux)
         SM_KERNEL_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_KERNEL))
         SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
         SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
+
         # Write version info to build.prop
         PRODUCT_PROPERTY_OVERRIDES += \
           ro.sm.kernel=$(SM_KERNEL_VERSION)
@@ -193,43 +204,79 @@ ifeq ($(strip $(HOST_OS)),linux)
   # Add extra libs for the compilers to use
   export LD_LIBRARY_PATH := $(TARGET_ARCH_LIB_PATH):$(LD_LIBRARY_PATH)
   export LIBRARY_PATH := $(TARGET_ARCH_LIB_PATH):$(LIBRARY_PATH)
-  # Force disable some modules that are not compatible with graphite flags.
-  # Add more modules if needed for devices in BoardConfig.mk
-  # LOCAL_DISABLE_GRAPHITE +=
-  LOCAL_DISABLE_GRAPHITE := \
-    libunwind \
-    libFFTEm \
-    libicui18n \
-    libskia \
-    libvpx \
-    libmedia_jni \
-    libstagefright_mp3dec \
-    libart \
-    mdnsd \
-    libwebrtc_spl \
-    third_party_WebKit_Source_core_webcore_svg_gyp \
-    libjni_filtershow_filters \
-    libavformat \
-    libavcodec \
-    skia_skia_library_gyp \
-    libSR_Core \
-    libwebviewchromium \
-    third_party_libvpx_libvpx_gyp \
-    ui_gl_gl_gyp
 
+  # Force disable some modules that are not compatible with graphite flags.
+  # Add more modules if needed for devices in a device make file somewhere with
+  # LOCAL_DISABLE_GRAPHITE:=
+
+  # Check if there's already something set in a device make file somewhere.
+  ifndef LOCAL_DISABLE_GRAPHITE
+    LOCAL_DISABLE_GRAPHITE := \
+      libunwind \
+      libFFTEm \
+      libicui18n \
+      libskia \
+      libvpx \
+      libmedia_jni \
+      libstagefright_mp3dec \
+      libart \
+      mdnsd \
+      libwebrtc_spl \
+      third_party_WebKit_Source_core_webcore_svg_gyp \
+      libjni_filtershow_filters \
+      libavformat \
+      libavcodec \
+      skia_skia_library_gyp \
+      libSR_Core \
+      libwebviewchromium \
+      third_party_libvpx_libvpx_gyp \
+      ui_gl_gl_gyp \
+      fio
+  else
+    LOCAL_DISABLE_GRAPHITE += \
+      libunwind \
+      libFFTEm \
+      libicui18n \
+      libskia \
+      libvpx \
+      libmedia_jni \
+      libstagefright_mp3dec \
+      libart \
+      mdnsd \
+      libwebrtc_spl \
+      third_party_WebKit_Source_core_webcore_svg_gyp \
+      libjni_filtershow_filters \
+      libavformat \
+      libavcodec \
+      skia_skia_library_gyp \
+      libSR_Core \
+      libwebviewchromium \
+      third_party_libvpx_libvpx_gyp \
+      ui_gl_gl_gyp \
+      fio
+  endif
+
+  # O3 optimizations
+  # To enable this set O3_OPTIMIZATIONS=true in a device makefile somewhere.
   ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
     OPT2 := (max)
 
     # Disable some modules that break with -O3
-    # Add more modules if needed for devices in BoardConfig.mk
-    # LOCAL_DISABLE_O3 +=
-    LOCAL_DISABLE_O3 := \
-      libaudioflinger \
-      libwebviewchromium \
-      skia_skia_library_gyp
+    # Add more modules if needed for devices in a device make file somewhere with
+    # LOCAL_DISABLE_O3 :=
 
-    LOCAL_DISABLE_PTHREAD := \
-      libc_netbsd
+    # Check if there's already something set in a device make file somewhere.
+    ifndef LOCAL_DISABLE_O3
+      LOCAL_DISABLE_O3 := \
+        libaudioflinger \
+        libwebviewchromium \
+        skia_skia_library_gyp
+    else
+      LOCAL_DISABLE_O3 += \
+        libaudioflinger \
+        libwebviewchromium \
+        skia_skia_library_gyp
+    endif
 
     # -O3 flags and friends
     O3_FLAGS := \
@@ -241,17 +288,48 @@ ifeq ($(strip $(HOST_OS)),linux)
 
   endif
 
+  # posix thread optimizations
+  # To enable this set ENABLE_PTHREAD=true in a device makefile somewhere.
   ifeq ($(strip $(ENABLE_PTHREAD)),true)
     OPT3 := (pthread)
+
+    # Disable some modules that break with -pthread
+    # Add more modules if needed for devices in a device make file somewhere with
+    # LOCAL_DISABLE_PTHREAD :=
+
+    # Check if there's already something set in a device make file somewhere.
+    ifndef LOCAL_DISABLE_PTHREAD
+      LOCAL_DISABLE_PTHREAD := \
+        libc_netbsd
+    else
+      LOCAL_DISABLE_PTHREAD += \
+        libc_netbsd
+    endif
   else
     OPT3:=
   endif
 
+  # Write gcc optimizations to build.prop
   GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)$(OPT3)
   ifneq ($(GCC_OPTIMIZATION_LEVELS),)
     PRODUCT_PROPERTY_OVERRIDES += \
       ro.sm.flags=$(GCC_OPTIMIZATION_LEVELS)
   endif
+
+  # General flags for gcc 4.9 to allow compilation to complete.
+  # Commented out for now since there's no common (non-device specific) modules to list here.
+  # Add more modules if needed for devices in a device make file somewhere with
+  # MAYBE_UNINITIALIZED :=
+
+  # Check if there's already something set in a device make file somewhere.
+  ifndef MAYBE_UNINITIALIZED
+    MAYBE_UNINITIALIZED := \
+      fastboot
+  else
+    MAYBE_UNINITIALIZED += \
+      fastboot
+  endif
+
 else
   $(warning ********************************************************************************)
   $(warning *  SaberMod currently only works on linux host systems.)

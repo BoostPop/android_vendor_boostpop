@@ -13,9 +13,14 @@
 # limitations under the License.
 #
 
+# Sabermod configs
 TARGET_ARCH := arm
 TARGET_SM_AND := 4.8
 TARGET_LIB_VERSION := 4.8
 TARGET_SM_KERNEL := 5.0
 O3_OPTIMIZATIONS := true
 ENABLE_PTHREAD := true
+
+# General flags for gcc 4.9 to allow compilation to complete.
+MAYBE_UNINITIALIZED := \
+  hwcomposer.msm8974
