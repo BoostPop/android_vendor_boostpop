@@ -1,6 +1,13 @@
 # Inherit AOSP device configuration for hammerhead
 $(call inherit-product, device/lge/hammerhead/full_hammerhead.mk)
 
+# Some common sabermod variables before common
+TARGET_ARCH := arm
+TARGET_SM_AND := 4.8
+O3_OPTIMIZATIONS := true
+TARGET_SM_KERNEL := 4.9
+ENABLE_ARM_THUMB_INTERWORK := true
+
 # Inherit common product files
 $(call inherit-product, vendor/boostpop/products/common.mk)
 
