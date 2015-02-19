@@ -36,7 +36,7 @@ PRODUCT_PROPERTY_OVERRIDES += persist.sys.dun.override=0
 # Boost build prop
 PRODUCT_PROPERTY_OVERRIDES += \
     pm.sleep.mode=1 \
-    wifi.supplicant_scan_interval=300 
+    wifi.supplicant_scan_interval=150 
 
 # Proprietary latinime lib needed for swyping
 PRODUCT_COPY_FILES += \
