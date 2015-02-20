@@ -209,7 +209,9 @@ ifeq ($(strip $(HOST_OS)),linux)
     libjni_filtershow_filters \
     libavformat \
     libavcodec \
-    skia_skia_library_gyp
+    skia_skia_library_gyp \
+    libSR_Core \
+    libwebviewchromium
 
   ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
     OPT2 := (max)
@@ -221,9 +223,6 @@ ifeq ($(strip $(HOST_OS)),linux)
       libaudioflinger \
       libwebviewchromium \
       skia_skia_library_gyp
-    # Don't compile -O3 with thumb to reduce code size.
-    LOCAL_DISABLE_O3_FLAGS := \
-      -mthumb
 
     # -O3 flags and friends
     O3_FLAGS := \
@@ -231,6 +230,9 @@ ifeq ($(strip $(HOST_OS)),linux)
       -Wno-error=array-bounds \
       -Wno-error=strict-overflow
   endif
+
+  LOCAL_DISABLE_THUMB_INTERWORK := \
+    libmincrypt
 
   GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)
   ifneq ($(GCC_OPTIMIZATION_LEVELS),)
@@ -242,4 +244,3 @@ else
   $(warning *  SaberMod currently only works on linux host systems.)
   $(warning ********************************************************************************)
 endif
-
