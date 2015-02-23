@@ -211,6 +211,7 @@ ifeq ($(strip $(HOST_OS)),linux)
     libavcodec \
     skia_skia_library_gyp \
     libSR_Core \
+    fio \
     libwebviewchromium
 
   ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
