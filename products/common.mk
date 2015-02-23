@@ -9,14 +9,19 @@ ROM_VERSION_MINOR := 9
 
 VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)
 
+# Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
+TARGET_USES_BLOCK_BASED_OTA := true
+
+# Boostpop release are no block base. We use block for beta testing.
+ifeq ($(TARGET_USES_BLOCK_BASED_OTA),true)
+    VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)-beta
+endif
+
 export ROM_VERSION := $(VERSION)
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.modversion=$(ROM_VERSION) \
     ro.boost.version=$(ROM_VERSION)
-
-# Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
-TARGET_USES_BLOCK_BASED_OTA := beta
 
 # Common build prop overrides 
 PRODUCT_PROPERTY_OVERRIDES += \
