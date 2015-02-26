@@ -8,6 +8,10 @@ TARGET_SM_KERNEL := 4.9
 O3_OPTIMIZATIONS := true
 ENABLE_PTHREAD := true
 
+# Enable boot animation optimization
+TARGET_BOOTANIMATION_USE_RGB565 := true
+TARGET_BOOTANIMATION_TEXTURE_CACHE := true
+
 # Inherit common product files
 $(call inherit-product, vendor/boostpop/products/common.mk)
 
