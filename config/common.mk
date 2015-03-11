@@ -4,8 +4,8 @@ PRODUCT_BRAND := Boostpop
 PRODUCT_DEVICE := generic
 
 # Version info
-ROM_VERSION_MAJOR := 2
-ROM_VERSION_MINOR := 10
+ROM_VERSION_MAJOR := 3
+ROM_VERSION_MINOR := 0
 ROM_VERSION_BETA := true
 
 # Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
@@ -37,14 +37,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     net.tethering.noprovisioning=true \
     keyguard.no_require_sim=true
 
-# Thank you, please drive thru!
-PRODUCT_PROPERTY_OVERRIDES += persist.sys.dun.override=0
-
-# Boost build prop
-PRODUCT_PROPERTY_OVERRIDES += \
-    pm.sleep.mode=1 \
-    wifi.supplicant_scan_interval=150 
-
 # Proprietary latinime lib needed for swyping
 PRODUCT_COPY_FILES += \
     vendor/boostpop/prebuilt/lib/libjni_latinime.so:system/lib/libjni_latinime.so
@@ -53,15 +45,15 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGE_OVERLAYS += vendor/boostpop/overlays/common
 
 # Inherit sabermod configs.  Default to arm if TARGET_ARCH is not defined.
-ifndef TARGET_ARCH
-  $(warning ********************************************************************************)
-  $(warning *  TARGET_ARCH not defined, defaulting to arm.)
-  $(warning *  To use arm64 set TARGET_ARCH := arm64)
-  $(warning *  in device tree before common.mk is called.)
-  $(warning ********************************************************************************)
-TARGET_ARCH := arm
-endif
-include vendor/boostpop/config/sm.mk
+#ifndef TARGET_ARCH
+#  $(warning ********************************************************************************)
+#  $(warning *  TARGET_ARCH not defined, defaulting to arm.)
+#  $(warning *  To use arm64 set TARGET_ARCH := arm64)
+#  $(warning *  in device tree before common.mk is called.)
+#  $(warning ********************************************************************************)
+#TARGET_ARCH := arm
+#endif
+#include vendor/boostpop/config/sm.mk
 
 # Bring in camera effects
 PRODUCT_COPY_FILES += \
@@ -79,10 +71,6 @@ PRODUCT_COPY_FILES += \
 # Bootanimation support
 PRODUCT_COPY_FILES += \
     vendor/boostpop/prebuilt/system/media/bootanimation.zip:system/media/bootanimation.zip
-
-# init.d script support
-PRODUCT_COPY_FILES += \
-    vendor/boostpop/prebuilt/bin/sysinit:system/bin/sysinit
 
 # SU Support
 PRODUCT_COPY_FILES += \
