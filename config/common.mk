@@ -72,6 +72,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     vendor/boostpop/prebuilt/system/media/bootanimation.zip:system/media/bootanimation.zip
 
+# init.d script support
+PRODUCT_COPY_FILES += \
+    vendor/boostpop/prebuilt/etc/init.d/00banner:system/etc/init.d/00banner \
+    vendor/boostpop/prebuilt/bin/sysinit:system/bin/sysinit
+
 # SU Support
 PRODUCT_COPY_FILES += \
     vendor/boostpop/prebuilt/misc/UPDATE-SuperSU.zip:system/addon.d/supersu/supersu.zip \
