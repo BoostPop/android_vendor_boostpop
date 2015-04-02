@@ -6,7 +6,7 @@ PRODUCT_DEVICE := generic
 # Version info
 ROM_VERSION_MAJOR := 3
 ROM_VERSION_MINOR := 0
-ROM_VERSION_BETA := true
+ROM_VERSION_BETA := false
 
 # Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
 TARGET_USES_BLOCK_BASED_OTA := false
