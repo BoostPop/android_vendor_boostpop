@@ -44,16 +44,8 @@ PRODUCT_COPY_FILES += \
 # Include overlays
 PRODUCT_PACKAGE_OVERLAYS += vendor/boostpop/overlays/common
 
-# Inherit sabermod configs.  Default to arm if TARGET_ARCH is not defined.
-#ifndef TARGET_ARCH
-#  $(warning ********************************************************************************)
-#  $(warning *  TARGET_ARCH not defined, defaulting to arm.)
-#  $(warning *  To use arm64 set TARGET_ARCH := arm64)
-#  $(warning *  in device tree before common.mk is called.)
-#  $(warning ********************************************************************************)
-#TARGET_ARCH := arm
-#endif
-#include vendor/boostpop/config/sm.mk
+# Include Saber config
+include vendor/boostpop/configs/sm.mk
 
 # Bring in camera effects
 PRODUCT_COPY_FILES += \
