@@ -28,13 +28,16 @@ MAYBE_UNINITIALIZED := \
 export EXTRA_SABERMOD_GCC_CFLAGS := \
          -ftree-loop-distribution \
          -ftree-loop-if-convert \
+         -ftree-loop-im \
+         -ftree-loop-ivcanon \
          -fvect-cost-model=dynamic \
          -fprefetch-loop-arrays \
          -ftree-vectorize \
          -mvectorize-with-neon-quad
 
 EXTRA_SABERMOD_AND_GCC_CFLAGS := \
-         -fsanitize=thread
+         -fsanitize=thread \
+         -ftree-parallelize-loops=n
 
 EXTRA_SABERMOD_CLANG_CFLAGS := \
          -ftree-loop-if-convert \
@@ -42,3 +45,5 @@ EXTRA_SABERMOD_CLANG_CFLAGS := \
          -ftree-vectorize \
          -mvectorize-with-neon-quad \
 	 -fsanitize=memory
+
+OPT4 := (extra)
