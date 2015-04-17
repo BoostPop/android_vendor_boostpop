@@ -19,6 +19,8 @@ TARGET_SM_AND := 4.8
 TARGET_SM_KERNEL := 5.0
 O3_OPTIMIZATIONS := true
 ENABLE_PTHREAD := true
+HAMMERHEAD_THREADS := 4
+PRODUCT_THREADS := $(HAMMERHEAD_THREADS)
 
 # General flags for gcc 4.9 to allow compilation to complete.
 MAYBE_UNINITIALIZED := \
@@ -32,23 +34,19 @@ export EXTRA_SABERMOD_GCC_CFLAGS := \
          -ftree-loop-ivcanon \
          -fprefetch-loop-arrays \
          -ftree-vectorize \
-         -mvectorize-with-neon-quad
+         -mvectorize-with-neon-quad \
+         -pipe
 
 # Extra SaberMod CLANG C flags
 EXTRA_SABERMOD_CLANG_CFLAGS := \
-         -fprefetch-loop-arrays \
-         -ftree-vectorize
+  -fprefetch-loop-arrays \
+  -ftree-vectorize \
+  -pipe
+         
 
 OPT4 := (extra)
 
-# Extra graphite flags for hammerhead, optimized for number of threads
-GRAPHITE_FLAGS := \
-  -floop-parallelize-all \
-  -ftree-parallelize-loops=4
-
 GRAPHITE_KERNEL_FLAGS := \
   -floop-parallelize-all \
-  -ftree-parallelize-loops=4
-
-LOCAL_DISABLE_GRAPHITE := \
-  libc_netbsd
+  -ftree-parallelize-loops=$(PRODUCT_THREADS) \
+  -fopenmp
