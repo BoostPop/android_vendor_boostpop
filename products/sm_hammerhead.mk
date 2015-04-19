@@ -50,3 +50,11 @@ GRAPHITE_KERNEL_FLAGS := \
   -floop-parallelize-all \
   -ftree-parallelize-loops=$(PRODUCT_THREADS) \
   -fopenmp
+
+# strict-aliasing kernel flags
+export KERNEL_STRICT_FLAGS := \
+         -fstrict-aliasing \
+         -Werror=strict-aliasing
+
+# Enable strict-aliasing kernel flags
+export CONFIG_MACH_MSM8974_HAMMERHEAD_STRICT_ALIASING := y
