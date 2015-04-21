@@ -4,6 +4,7 @@ PRODUCT_BRAND := Boostpop
 PRODUCT_DEVICE := generic
 
 # Include BoostPop version
+include vendor/boostpop/boostinfo.mk
 include vendor/boostpop/configs/version.mk
 
 # Common build prop overrides 

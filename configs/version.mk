@@ -1,17 +1,12 @@
-# Version info
-ROM_VERSION_MAJOR := 3
-ROM_VERSION_MINOR := 0
-ROM_VERSION_BETA := true
+# Boostpop release are not block based and comes with the pre-odex system apk. 
+# We use other settings for for beta testing.
 
-# Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
-TARGET_USES_BLOCK_BASED_OTA := false
-
-VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)
-
-# Boostpop release are no block base. We use block for beta testing.
-ifeq ($(ROM_VERSION_BETA),true)
+ifeq ($(ROM_VERSION_RELEASE),true)
     TARGET_USES_BLOCK_BASED_OTA := true
-    VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)-beta
+    TARGET_USES_DEOXPREOT_OTA := true
+    VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)
+else
+    VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)-$(shell date -u +%Y%m%d)
 endif
 
 export ROM_VERSION := $(VERSION)
