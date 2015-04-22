@@ -8,7 +8,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.error.receiver.system.apps=com.google.android.gms \
     ro.setupwizard.enterprise_mode=1 \
     net.tethering.noprovisioning=true \
-    keyguard.no_require_sim=true
+    keyguard.no_require_sim=true \
+    ro.setupwizard.network_required=false \
+    ro.setupwizard.gservices_delay=-1 \
 
 # Proprietary latinime lib needed for swyping
 PRODUCT_COPY_FILES += \
