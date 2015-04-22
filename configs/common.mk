@@ -19,3 +19,5 @@ include vendor/boostpop/configs/system.mk
 # Include custom Media files 
 include vendor/boostpop/configs/media.mk
 
+# Inlcude boost extra 
+include vendor/boostpop/configs/boost_extras.mk
