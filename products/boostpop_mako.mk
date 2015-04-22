@@ -16,6 +16,6 @@ PRODUCT_MANUFACTURER := LGE
 
 # Build prop fingerprint overrides
 PRODUCT_BUILD_PROP_OVERRIDES += PRODUCT_NAME="okkam" 
-BUILD_FINGERPRINT="google/occam/mako:5.0.2/LRX22G/1602158:user/release-keys" 
-PRIVATE_BUILD_DESC="occam-user 5.0.2 LRX22G 1602158 release-keys"
+BUILD_FINGERPRINT="google/occam/mako:5.1.1/LMY47V/1602158:user/release-keys" 
+PRIVATE_BUILD_DESC="occam-user 5.1.1 LMY47V 1602158 release-keys"
 

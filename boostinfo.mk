@@ -10,4 +10,4 @@ ROM_VERSION_RELEASE :=
 TARGET_USES_BLOCK_BASED_OTA := true 
 
 # Use deoxed build for debug
-TARGET_USES_DEOXPREOT_OTA := false
+TARGET_USES_DEOXPREOT_OTA := true
