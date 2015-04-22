@@ -36,23 +36,31 @@ ifeq ($(strip $(HOST_OS)),linux)
   MAYBE_UNINITIALIZED := \
     hwcomposer.msm8974
 
-  # Extra SaberMod GCC C flags for the ROM and Kernel
+  # Extra SaberMod GCC C flags for arch target and Kernel
   export EXTRA_SABERMOD_GCC_CFLAGS := \
-           -ftree-loop-distribution \
-           -ftree-loop-if-convert \
-           -ftree-loop-im \
-           -ftree-loop-ivcanon \
-           -fprefetch-loop-arrays \
            -ftree-vectorize \
            -mvectorize-with-neon-quad \
            -pipe
 
+  # Flags that should only be used with -O3 optimizations on arch target gcc.
+  ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+    EXTRA_SABERMOD_GCC_O3_CFLAGS := \
+      -ftree-loop-distribution \
+      -ftree-loop-if-convert \
+      -ftree-loop-im \
+      -ftree-loop-ivcanon \
+      -fprefetch-loop-arrays
+  endif
+
   # Extra SaberMod CLANG C flags
   EXTRA_SABERMOD_CLANG_CFLAGS := \
-    -fprefetch-loop-arrays \
     -ftree-vectorize \
     -pipe
-         
+
+  # Flags that should only be used with -O3 optimizations on clang.
+  ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+    EXTRA_SABERMOD_CLANG_O3_CFLAGS := -fprefetch-loop-arrays
+  endif
 
   OPT4 := (extra)
 
