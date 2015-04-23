@@ -27,3 +27,10 @@ PRODUCT_COPY_FILES += \
 # Enable SIP+VoIP
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
+
+# Googley
+PRODUCT_COPY_FILES += \
+    vendor/boostpop/prebuilt/etc/sysconfig/google.xml:system/etc/sysconfig/google.xml \
+    vendor/boostpop/prebuilt/etc/sysconfig/google_build.xml:system/etc/sysconfig/google_build.xml \
+    vendor/boostpop/prebuilt/etc/updatecmds/google_generic_update.txt:system/etc/updatecmds/google_generic_update.txt \
+
