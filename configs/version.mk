@@ -6,7 +6,11 @@ ifeq ($(ROM_VERSION_RELEASE),true)
     TARGET_USES_DEOXPREOT_OTA := true
     VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)
 else
-    VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)-$(shell date -u +%Y%m%d)
+ifeq ($(ROM_VERSION_TAG), )
+    VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)-$(shell date -u +%Y_%m_%d)
+else
+    VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)-$(ROM_VERSION_TAG)-$(shell date -u +%Y%m%d)
+endif
 endif
 
 export ROM_VERSION := $(VERSION)
