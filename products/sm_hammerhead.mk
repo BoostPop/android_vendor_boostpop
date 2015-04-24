@@ -40,9 +40,6 @@ ifeq ($(strip $(HOST_OS)),linux)
   export KERNEL_STRICT_FLAGS := \
            -fstrict-aliasing \
            -Werror=strict-aliasing
-
-  # Enable strict-aliasing kernel flags
-  export CONFIG_MACH_MSM8974_HAMMERHEAD_STRICT_ALIASING := y
 endif
 
 ENABLE_PTHREAD := true
