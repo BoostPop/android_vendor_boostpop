@@ -12,6 +12,9 @@ ROM_VERSION_MINOR := 1
 ROM_VERSION_TAG :=
 ROM_VERSION_RELEASE := 
 
+# Set 1 to use precompiled chromium
+USE_PREBUILT_CHROMIUM := 1
+
 # Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
 TARGET_USES_BLOCK_BASED_OTA := true
 
