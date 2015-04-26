@@ -30,13 +30,10 @@ ifeq ($(strip $(HOST_OS)),linux)
   HAMMERHEAD_THREADS := 4
   PRODUCT_THREADS := $(HAMMERHEAD_THREADS)
 
-  # strict-aliasing kernel flags
-  export KERNEL_STRICT_FLAGS := \
-           -fstrict-aliasing \
-           -Werror=strict-aliasing
-
-  # Enable strict-aliasing kernel flags
-export CONFIG_MACH_MSM8974_HAMMERHEAD_STRICT_ALIASING := y
+GRAPHITE_KERNEL_FLAGS := \
+    -floop-parallelize-all \
+    -ftree-parallelize-loops=$(PRODUCT_THREADS) \
+    -fopenmp
 endif
 
 ENABLE_PTHREAD := true
@@ -50,6 +47,16 @@ export EXTRA_SABERMOD_GCC_CFLAGS := \
          -ftree-vectorize \
          -mvectorize-with-neon-quad
 
-LOCAL_DISABLE_STRICT_ALIASING := \
-  libmmcamera_interface\
-  camera.hammerhead
+ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
+  # strict-aliasing kernel flags
+  export KERNEL_STRICT_FLAGS := \
+           -fstrict-aliasing \
+           -Werror=strict-aliasing
+
+  # Enable strict-aliasing kernel flags
+export CONFIG_MACH_MSM8974_HAMMERHEAD_STRICT_ALIASING := y
+  LOCAL_DISABLE_STRICT_ALIASING := \
+    libmmcamera_interface\
+    camera.hammerhead
+endif
+

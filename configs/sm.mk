@@ -316,7 +316,8 @@ ifeq ($(strip $(HOST_OS)),linux)
         libSR_Core \
         third_party_libvpx_libvpx_gyp \
         ui_gl_gl_gyp \
-        fio
+        fio \
+        libpdfiumcore
 
       # Check if there's already something set in a device make file somewhere.
       ifndef LOCAL_DISABLE_GRAPHITE
@@ -341,7 +342,8 @@ endif
 # This causes warnings and should be dealt with, by turning strict-aliasing off to fix the warnings,
 # until AOSP gets around to fixing the warnings locally in the code.
 
-LOCAL_BASE_DISABLE_STRICT_ALIASING := \
+ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
+  LOCAL_BASE_DISABLE_STRICT_ALIASING := \
     libpdfiumcore \
     libpdfium \
     libc_bionic \
@@ -386,15 +388,18 @@ LOCAL_BASE_DISABLE_STRICT_ALIASING := \
     audio.a2dp.default \
     libjavacore \
     libstagefright_avcenc \
-    libRSDriver
+    libRSDriver \
+    libc_malloc \
+    libRSSupport
 
-# Check if there's already something set in a device make file somewhere.
-ifndef LOCAL_DISABLE_STRICT_ALIASING
-  LOCAL_DISABLE_STRICT_ALIASING := \
-    $(LOCAL_BASE_DISABLE_STRICT_ALIASING)
-else
-  LOCAL_DISABLE_STRICT_ALIASING += \
-    $(LOCAL_BASE_DISABLE_STRICT_ALIASING)
+  # Check if there's already something set in a device make file somewhere.
+  ifndef LOCAL_DISABLE_STRICT_ALIASING
+    LOCAL_DISABLE_STRICT_ALIASING := \
+      $(LOCAL_BASE_DISABLE_STRICT_ALIASING)
+  else
+    LOCAL_DISABLE_STRICT_ALIASING += \
+      $(LOCAL_BASE_DISABLE_STRICT_ALIASING)
+  endif
 endif
 
 # O3 optimizations
@@ -513,7 +518,7 @@ ifeq ($(strip $(ENABLE_SABERMOD_ARM_MODE)),true)
     ositests \
     libbt-vendor
 
-  LOCAL_COMPILERS_WHITELIST := \
+  LOCAL_ARM_COMPILERS_WHITELIST := \
     $(LOCAL_BLUETOOTH_BLUEDROID) \
     libmincrypt \
     libc++abi \
@@ -526,6 +531,19 @@ ifeq ($(strip $(ENABLE_SABERMOD_ARM_MODE)),true)
     libscrypt_static \
     libRSCpuRef \
     libRSDriver
+
+  LOCAL_ARM64_COMPILERS_WHITELIST := \
+    $(LOCAL_BLUETOOTH_BLUEDROID) \
+    libc++abi \
+    libcompiler_rt \
+    libnativebridge \
+    libjni_latinime_common_static \
+    libRSSupport \
+    libc++ \
+    libRSCpuRef \
+    netd \
+    libRSDriver \
+    libjpeg
 endif
 
 GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)$(OPT3)$(OPT4)$(OPT5)
