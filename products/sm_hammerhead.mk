@@ -25,10 +25,11 @@ ifeq ($(strip $(HOST_OS)),linux)
 
   # Sabermod configs
   TARGET_ARCH := arm
-  TARGET_SM_AND := 4.9
-  TARGET_SM_KERNEL := 6.0
+  TARGET_SM_AND := 4.8
+  TARGET_SM_KERNEL := 5.1
   HAMMERHEAD_THREADS := 4
   PRODUCT_THREADS := $(HAMMERHEAD_THREADS)
+  ENABLE_STRICT_ALIASING := true
 
 GRAPHITE_KERNEL_FLAGS := \
     -floop-parallelize-all \
