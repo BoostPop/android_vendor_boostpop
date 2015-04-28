@@ -43,9 +43,10 @@ MAYBE_UNINITIALIZED := \
   hwcomposer.msm8974
 
 # Extra SaberMod GCC C flags for arch target and Kernel
-export EXTRA_SABERMOD_GCC_CFLAGS := \
+export EXTRA_SABERMOD_GCC_VECTORIZE_CFLAGS := \
          -ftree-vectorize \
          -mvectorize-with-neon-quad
+  
 
 ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
   # strict-aliasing kernel flags
