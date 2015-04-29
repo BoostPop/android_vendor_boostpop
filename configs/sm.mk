@@ -495,7 +495,8 @@ LOCAL_BLUETOOTH_BLUEDROID := \
   libbt-hci \
   libosi \
   ositests \
-  libbt-vendor
+  libbt-vendor \
+  libbluetooth_jni
 
 ifeq ($(strip $(ENABLE_SABERMOD_ARM_MODE)),true)
   # SABERMOD_ARM_MODE
