@@ -19,7 +19,7 @@ USE_PREBUILT_CHROMIUM := 1
 TARGET_USES_BLOCK_BASED_OTA := true
 
 # Use deoxed build for debug
-TARGET_USES_DEOXPREOT_OTA := true
+TARGET_USES_DEOXPREOT_OTA := false
 
 # Include BoostPop version
 include vendor/boostpop/configs/version.mk
