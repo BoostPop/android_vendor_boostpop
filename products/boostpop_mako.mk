@@ -5,7 +5,7 @@ $(call inherit-product, device/lge/mako/full_mako.mk)
 include vendor/boostpop/products/sm_mako.mk
 
 # Inherit common product files
-$(call inherit-product, vendor/boostpop/configs/common.mk)
+$(call inherit-product, vendor/boostpop/boostpop_main.mk)
 
 # Setup device specific product configuration
 PRODUCT_NAME := boostpop_mako
