@@ -28,6 +28,12 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml
 
+# Add few DRM lib
+PRODUCT_COPY_FILES += \
+    vendor/boostpop/prebuilt/lib/drm/libdrmwvmplugin.so:system/vendor/lib/drm/libdrmwvmplugin.so \
+    vendor/boostpop/prebuilt/lib/mediadrm/libdrmclearkeyplugin.so:system/vendor/lib/mediadrm/libdrmclearkeyplugin.so \
+    vendor/boostpop/prebuilt/lib/mediadrm/libwvdrmengine.so:system/vendor/lib/mediadrm/libwvdrmengine.so
+
 # Googley
 PRODUCT_COPY_FILES += \
     vendor/boostpop/prebuilt/etc/sysconfig/google.xml:system/etc/sysconfig/google.xml \
