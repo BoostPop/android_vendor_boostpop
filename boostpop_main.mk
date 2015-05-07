@@ -28,7 +28,8 @@ include vendor/boostpop/configs/version.mk
 include vendor/boostpop/configs/aosp_fixes.mk
 
 # Include Saber config
-include vendor/boostpop/configs/sm.mk
+#include vendor/boostpop/configs/sm.mk
+include vendor/boostpop/configs/boost_sm.mk
 
 # Include System settings
 include vendor/boostpop/configs/system.mk
