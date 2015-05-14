@@ -16,7 +16,7 @@
 # Sabermod configs
 TARGET_ARCH := arm
 TARGET_SM_AND := 4.8
-TARGET_SM_KERNEL := 5.0
+TARGET_SM_KERNEL := 5.1
 O3_OPTIMIZATIONS := true
 ENABLE_PTHREAD := true
 
