@@ -14,7 +14,7 @@
 #
 
 # Clear SaberMod variables
-$(shell unset EXTRA_SABERMOD_GCC_CFLAGS)
+$(shell unset EXTRA_SABERMOD_GCC_VECTORIZE_CFLAGS)
 $(shell unset GRAPHITE_KERNEL_FLAGS)
 $(shell unset KERNEL_STRICT_FLAGS)
 $(shell unset O3_OPTIMIZATIONS)
@@ -22,6 +22,7 @@ $(shell unset EXTRA_SABERMOD_GCC_O3_CFLAGS)
 $(shell unset GRAPHITE_UNROLL_AND_JAM)
 $(shell unset LD_LIBRARY_PATH)
 $(shell unset LIBRARY_PATH)
+$(shell unset ENABLE_PTHREAD)
 
 
 ifeq (boostpop_hammerhead,$(TARGET_PRODUCT))

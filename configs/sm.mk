@@ -69,7 +69,25 @@ export O3_OPTIMIZATIONS := true
 endif
 
 ifeq ($(strip $(ENABLE_SABERMOD_ARM_MODE)),true)
-  OPT5 := (saber-mode)
+  OPT4 := (saber-mode)
+endif
+
+ifeq ($(strip $(TARGET_ARCH)),arm)
+
+  # Strict aliasing
+  ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
+    GCC_STRICT_CFLAGS := -Wstrict-aliasing=3 -Werror=strict-aliasing
+    CLANG_STRICT_CFLAGS := -Wstrict-aliasing=2 -Werror=strict-aliasing
+  endif
+endif
+
+ifeq ($(strip $(TARGET_ARCH)),arm64)
+
+  # Strict aliasing
+  ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
+    GCC_STRICT_CFLAGS := -fstrict-aliasing -Wstrict-aliasing=3 -Werror=strict-aliasing
+    CLANG_STRICT_CFLAGS := -fstrict-aliasing -Wstrict-aliasing=2 -Werror=strict-aliasing
+  endif
 endif
 
 # Only use these compilers on linux host and arm targets.
@@ -140,10 +158,6 @@ ifeq ($(strip $(HOST_OS)),linux)
           SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
           SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
 
-          # Write version info to build.prop
-          PRODUCT_PROPERTY_OVERRIDES += \
-            ro.sm.kernel=$(SM_KERNEL_VERSION)
-
           # Make dependent on -O3 optimizations.
           # These are extra loop optmizations, that act as helpers for -O3 and other loop optimization flags.
           ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
@@ -151,7 +165,7 @@ ifeq ($(strip $(HOST_OS)),linux)
             # Graphite flags for kernel
 
             # Some graphite flags are only available for certain gcc versions
-     export GRAPHITE_UNROLL_AND_JAM := $(filter 5.0.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
+     export GRAPHITE_UNROLL_AND_JAM := $(filter 5.1.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
 
             BASE_GRAPHITE_KERNEL_FLAGS := \
               -fgraphite \
@@ -245,10 +259,6 @@ ifeq ($(strip $(HOST_OS)),linux)
           SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
           SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
 
-          # Write version info to build.prop
-          PRODUCT_PROPERTY_OVERRIDES += \
-            ro.sm.kernel=$(SM_KERNEL_VERSION)
-
           # Make dependent on -O3 optimizations.
           # These are extra loop optmizations, that act as helpers for -O3 and other loop optimization flags.
           ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
@@ -256,7 +266,7 @@ ifeq ($(strip $(HOST_OS)),linux)
             # Graphite flags for kernel
 
             # Some graphite flags are only available for certain gcc versions
-     export GRAPHITE_UNROLL_AND_JAM := $(filter 5.0.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
+     export GRAPHITE_UNROLL_AND_JAM := $(filter 5.1.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
 
             BASE_GRAPHITE_KERNEL_FLAGS := \
               -fgraphite \
@@ -336,11 +346,7 @@ else
     $(warning ********************************************************************************)
 endif
 
-# BUGFIX for AOSP
-# strict-aliasing has a long well known history of breaking code when allowed to pass with warnings.
-# AOSP has blindly turned on strict-aliasing in various places locally throughout the source.
-# This causes warnings and should be dealt with, by turning strict-aliasing off to fix the warnings,
-# until AOSP gets around to fixing the warnings locally in the code.
+# strict-aliasing
 
 ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
   LOCAL_BASE_DISABLE_STRICT_ALIASING := \
@@ -390,7 +396,26 @@ ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
     libstagefright_avcenc \
     libRSDriver \
     libc_malloc \
-    libRSSupport
+    libRSSupport \
+    libstlport \
+    libandroid_runtime \
+    libcrypto \
+    libwnndict \
+    libmedia \
+    dnsmasq \
+    ping \
+    ping6 \
+    libaudioflinger \
+    libmediaplayerservice \
+    libstagefright \
+    libvariablespeed \
+    librtp_jni \
+    libwilhelm \
+    libdownmix \
+    libldnhncr \
+    libqcomvisualizer \
+    libvisualizer \
+    libandroidfw
 
   # Check if there's already something set in a device make file somewhere.
   ifndef LOCAL_DISABLE_STRICT_ALIASING
@@ -400,71 +425,9 @@ ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
     LOCAL_DISABLE_STRICT_ALIASING += \
       $(LOCAL_BASE_DISABLE_STRICT_ALIASING)
   endif
-endif
-
-# O3 optimizations
-ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
-
-  # If -O3 is enabled, force disable on thumb flags.
-  # loop optmizations are not really usefull in thumb mode.
-  DISABLE_O3_OPTIMIZATIONS_THUMB := true
-  OPT2 := (max)
-
-  # Disable some modules that break with -O3
-  # Add more modules if needed for devices in a device make file somewhere with
-  # LOCAL_DISABLE_O3 :=
-
-  # Check if there's already something set in a device make file somewhere.
-  ifndef LOCAL_DISABLE_O3
-    LOCAL_DISABLE_O3 := \
-      libaudioflinger \
-      skia_skia_library_gyp
-  else
-    LOCAL_DISABLE_O3 += \
-      libaudioflinger \
-      skia_skia_library_gyp
-  endif
-
-  # -O3 flags and friends
-  O3_FLAGS := \
-    -O3 \
-    -Wno-error=array-bounds \
-    -Wno-error=strict-overflow
-
-  # Extra SaberMod GCC loop flags.
-export EXTRA_SABERMOD_GCC_O3_CFLAGS := \
-         -ftree-loop-distribution \
-         -ftree-loop-if-convert \
-         -ftree-loop-im \
-         -ftree-loop-ivcanon
-
-  EXTRA_SABERMOD_HOST_GCC_O3_CFLAGS := \
-    -ftree-loop-distribution \
-    -ftree-loop-if-convert \
-    -ftree-loop-im \
-    -ftree-loop-ivcanon
+  OPT5 := (strict-aliasing)
 else
-    OPT2:=
-endif
-
-# posix thread optimizations
-# To enable this set ENABLE_PTHREAD=true in a device makefile somewhere.
-ifeq ($(strip $(ENABLE_PTHREAD)),true)
-  OPT3 := (pthread)
-
-  # Disable some modules that break with -pthread
-  # Add more modules if needed for devices in a device make file somewhere with
-  # LOCAL_DISABLE_PTHREAD :=
-  # Check if there's already something set in a device make file somewhere.
-  ifndef LOCAL_DISABLE_PTHREAD
-    LOCAL_DISABLE_PTHREAD := \
-      libc_netbsd
-  else
-    LOCAL_DISABLE_PTHREAD += \
-      libc_netbsd
-  endif
-else
-  OPT3:=
+  OPT5 :=
 endif
 
 # General flags for gcc 4.9 to allow compilation to complete.
@@ -498,13 +461,61 @@ LOCAL_BLUETOOTH_BLUEDROID := \
   libbt-vendor \
   libbluetooth_jni
 
+# O3 optimizations
+ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+
+  # If -O3 is enabled, force disable on thumb flags.
+  # loop optmizations are not really usefull in thumb mode.
+  DISABLE_O3_OPTIMIZATIONS_THUMB := true
+  OPT2 := (max)
+
+  # Disable some modules that break with -O3
+  # Add more modules if needed for devices in a device make file somewhere with
+  # LOCAL_DISABLE_O3 :=
+
+  # Check if there's already something set in a device make file somewhere.
+  ifndef LOCAL_DISABLE_O3
+    LOCAL_DISABLE_O3 := \
+      libaudioflinger \
+      skia_skia_library_gyp \
+      $(LOCAL_BLUETOOTH_BLUEDROID)
+  else
+    LOCAL_DISABLE_O3 += \
+      libaudioflinger \
+      skia_skia_library_gyp \
+      $(LOCAL_BLUETOOTH_BLUEDROID)
+  endif
+
+  # -O3 flags and friends
+  O3_FLAGS := \
+    -O3 \
+    -Wno-error=array-bounds \
+    -Wno-error=strict-overflow
+
+  # Extra SaberMod GCC loop flags.
+export EXTRA_SABERMOD_GCC_O3_CFLAGS := \
+         -ftree-loop-distribution \
+         -ftree-loop-if-convert \
+         -ftree-loop-im \
+         -ftree-loop-ivcanon
+
+  EXTRA_SABERMOD_HOST_GCC_O3_CFLAGS := \
+    -ftree-loop-distribution \
+    -ftree-loop-if-convert \
+    -ftree-loop-im \
+    -ftree-loop-ivcanon
+else
+    OPT2:=
+endif
+
+NO_OPTIMIZATIONS := $(LOCAL_BLUETOOTH_BLUEDROID)
+
 ifeq ($(strip $(ENABLE_SABERMOD_ARM_MODE)),true)
   # SABERMOD_ARM_MODE
   # The LOCAL_COMPILERS_WHITELIST will allow modules that absolutely have to be complied with thumb instructions,
   # or the clang compiler, to skip replacing the default overrides.
 
   LOCAL_ARM_COMPILERS_WHITELIST := \
-    $(LOCAL_BLUETOOTH_BLUEDROID) \
     libmincrypt \
     libc++abi \
     libjni_latinime_common_static \
@@ -515,10 +526,10 @@ ifeq ($(strip $(ENABLE_SABERMOD_ARM_MODE)),true)
     netd \
     libscrypt_static \
     libRSCpuRef \
-    libRSDriver
+    libRSDriver \
+    $(LOCAL_BLUETOOTH_BLUEDROID)
 
   LOCAL_ARM64_COMPILERS_WHITELIST := \
-    $(LOCAL_BLUETOOTH_BLUEDROID) \
     libc++abi \
     libcompiler_rt \
     libnativebridge \
@@ -528,7 +539,8 @@ ifeq ($(strip $(ENABLE_SABERMOD_ARM_MODE)),true)
     libRSCpuRef \
     netd \
     libRSDriver \
-    libjpeg
+    libjpeg \
+    $(LOCAL_BLUETOOTH_BLUEDROID)
 endif
 
 # Enable some basic host gcc optimizations
@@ -538,7 +550,7 @@ EXTRA_SABERMOD_HOST_GCC_CFLAGS := \
   -ftree-vectorize
 
 # Extra SaberMod CLANG C flags
-LOCAL_SABERMOD_CLANG_VECTORIZE_CFLAGS := \
+EXTRA_SABERMOD_CLANG_CFLAGS := \
   -ftree-vectorize
 
 # Check if there's already something set in a device make file somewhere.
@@ -555,9 +567,11 @@ else
   LOCAL_DISABLE_SABERMOD_CLANG_VECTORIZE_CFLAGS += $(LOCAL_BLUETOOTH_BLUEDROID)
 endif
 
-OPT4 := (extra)
+OPT3 := (extra)
+OPT6 := (memory-sanitizer)
+Opt7 := (OpenMP)
 
-GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)$(OPT3)$(OPT4)$(OPT5)
+GCC_OPTIMIZATION_LEVELS := $(OPT1)$(OPT2)$(OPT4)$(OPT5)$(OPT6)$(OPT7)
 ifneq ($(GCC_OPTIMIZATION_LEVELS),)
   PRODUCT_PROPERTY_OVERRIDES += \
     ro.sm.flags=$(GCC_OPTIMIZATION_LEVELS)
