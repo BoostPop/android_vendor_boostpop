@@ -1,7 +1,7 @@
 # Bring in camera effects
 PRODUCT_COPY_FILES += \
-    vendor/boostpop/prebuilt/system/media/LMprec_508.emd:system/media/LMprec_508.emd \
-    vendor/boostpop/prebuilt/system/media/PFFprec_600.emd:system/media/PFFprec_600.emd \
+    vendor/boostpop/prebuilt/system/media/LMprec_508.emd:vendor/media/LMspeed_508.emd \
+    vendor/boostpop/prebuilt/system/media/PFFprec_600.emd:vendor/media/PFFprec_600.emd \
 
 # Bootanimation support
 PRODUCT_COPY_FILES += \
