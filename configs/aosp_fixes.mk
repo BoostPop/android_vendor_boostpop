@@ -7,18 +7,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.wifi-watchlist=GoogleGuest \
     ro.error.receiver.system.apps=com.google.android.gms \
     ro.setupwizard.enterprise_mode=1 \
-    net.tethering.noprovisioning=true \
     keyguard.no_require_sim=true \
-    ro.setupwizard.network_required=false \
-    ro.setupwizard.gservices_delay=-1 \
     ro.facelock.black_timeout=400 \
     ro.facelock.det_timeout=1500 \
     ro.facelock.rec_timeout=2500 \
     ro.facelock.lively_timeout=2500 \
     ro.facelock.est_max_time=600 \
     ro.facelock.use_intro_anim=false \
-    dalvik.vm.image-dex2oat-filter=everything \
-    dalvik.vm.dex2oat-filter=everything
 
 # Proprietary latinime lib needed for swyping
 PRODUCT_COPY_FILES += \
