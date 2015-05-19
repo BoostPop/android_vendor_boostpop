@@ -24,6 +24,7 @@ endif
 ifeq ($(ROM_VERSION_RELEASE),true)
     TARGET_USES_BLOCK_BASED_OTA :=false
     TARGET_USES_DEOXPREOT_OTA :=true
+    CHANGELOG :=true
     VERSION := $(ROM_VERSION_MAJOR).$(ROM_VERSION_MINOR)
 endif
 
