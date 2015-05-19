@@ -18,7 +18,6 @@ $(call inherit-product, device/lge/hammerhead/full_hammerhead.mk)
 # Inherit sabermod device configuration
 include vendor/boostpop/products/sm_hammerhead.mk
 #include vendor/boostpop/products/boost_saber_hammerhead.mk
-TARGET_ARCH := arm
 
 # Inherit common product files
 $(call inherit-product, vendor/boostpop/boostpop_main.mk)

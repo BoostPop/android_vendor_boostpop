@@ -24,20 +24,16 @@ endif
 ifeq ($(strip $(HOST_OS)),linux)
 
   # Sabermod configs
-  TARGET_SM_AND := 4.9
+  TARGET_ARCH := arm
   TARGET_SM_KERNEL := 4.9
   MAKO_THREADS := 4
   PRODUCT_THREADS := $(MAKO_THREADS)
-  ENABLE_STRICT_ALIASING := false
-  export ENABLE_PTHREAD := false
+  ENABLE_STRICT_ALIASING := true
+export ENABLE_PTHREAD := false
 
 GRAPHITE_KERNEL_FLAGS := \
-    -floop-parallelize-all \
-    -ftree-parallelize-loops=$(PRODUCT_THREADS) \
-    -fopenmp
+  -fopenmp
 endif
-
-# General flags for gcc 4.9 to allow compilation to complete.
 
 # Extra SaberMod GCC C flags for arch target and Kernel
 export EXTRA_SABERMOD_GCC_VECTORIZE_CFLAGS := \
@@ -46,7 +42,11 @@ export EXTRA_SABERMOD_GCC_VECTORIZE_CFLAGS := \
 
 ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
   # strict-aliasing kernel flags
-  export KERNEL_STRICT_FLAGS := \
-           -fstrict-aliasing \
-           -Werror=strict-aliasing
+export KERNEL_STRICT_FLAGS := \
+         -fstrict-aliasing \
+         -Wstrict-aliasing=3 \
+         -Werror=strict-aliasing
+
+  # Enable strict-aliasing kernel flags
+export CONFIG_MACH_MSM8960_MAKO_STRICT_ALIASING := y
 endif
