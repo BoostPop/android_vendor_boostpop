@@ -31,8 +31,6 @@ ifndef TARGET_SM_AND
   $(warning ********************************************************************************)
   $(warning *  TARGET_SM_AND not defined.)
   $(warning *  Defaulting to gcc 4.9 for ROM.)
-  $(warning *  To change this set TARGET_SM_AND in device makefile before this file is called.)
-  $(warning *  This is required for arm64 devices for the kernel TARGET_SM_KERNEL := 4.9)
   $(warning ********************************************************************************)
   export TARGET_SM_AND := 4.9
 endif
@@ -42,10 +40,9 @@ ifdef TARGET_SM_KERNEL
 else
   $(warning ********************************************************************************)
   $(warning *  TARGET_SM_KERNEL not defined.)
-  $(warning *  This needs to be set in device makefile before this file is called for inline kernel building.)
-  $(warning *  Skipping kernel bits.)
+  $(warning *  Defaulting to ROM gcc version $(TARGET_SM_AND).)
   $(warning ********************************************************************************)
-  TARGET_SM_KERNEL_DEFINED := false
+  TARGET_SM_KERNEL := $(TARGET_SM_AND)
 endif
 
 # Set GCC colors
@@ -145,51 +142,46 @@ export TARGET_ARCH_LIB_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUIL
         endif
       endif
 
-      # Skip kernel bits if TARGET_SM_KERNEL is not defined.
-      ifeq ($(strip $(TARGET_SM_KERNEL_DEFINED)),true)
+      # Path to kernel toolchain
+      SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_SM_KERNEL)
+      SM_KERNEL := $(shell $(SM_KERNEL_PATH)/bin/arm-eabi-gcc --version)
 
-        # Path to kernel toolchain
-        SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/arm/arm-eabi-$(TARGET_SM_KERNEL)
-        SM_KERNEL := $(shell $(SM_KERNEL_PATH)/bin/arm-eabi-gcc --version)
+      ifneq ($(filter %sabermod,$(SM_KERNEL)),)
+        SM_KERNEL_NAME := $(filter %sabermod,$(SM_KERNEL))
+        SM_KERNEL_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_KERNEL))
+        SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
+        SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
 
-        ifneq ($(filter %sabermod,$(SM_KERNEL)),)
-          SM_KERNEL_NAME := $(filter %sabermod,$(SM_KERNEL))
-          SM_KERNEL_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_KERNEL))
-          SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
-          SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
+        # Make dependent on -O3 optimizations.
+        # These are extra loop optmizations, that act as helpers for -O3 and other loop optimization flags.
+        ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+          # Graphite flags for kernel
 
-          # Make dependent on -O3 optimizations.
-          # These are extra loop optmizations, that act as helpers for -O3 and other loop optimization flags.
-          ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+          # Some graphite flags are only available for certain gcc versions
+   export GRAPHITE_UNROLL_AND_JAM := $(filter 5.1.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
 
-            # Graphite flags for kernel
+          BASE_GRAPHITE_KERNEL_FLAGS := \
+            -fgraphite \
+            -fgraphite-identity \
+            -floop-flatten \
+            -ftree-loop-linear \
+            -floop-interchange \
+            -floop-strip-mine \
+            -floop-block \
+            -floop-nest-optimize
+          ifneq ($(GRAPHITE_UNROLL_AND_JAM),)
+            BASE_GRAPHITE_KERNEL_FLAGS += \
+              -floop-unroll-and-jam
+          endif
 
-            # Some graphite flags are only available for certain gcc versions
-     export GRAPHITE_UNROLL_AND_JAM := $(filter 5.1.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
-
-            BASE_GRAPHITE_KERNEL_FLAGS := \
-              -fgraphite \
-              -fgraphite-identity \
-              -floop-flatten \
-              -ftree-loop-linear \
-              -floop-interchange \
-              -floop-strip-mine \
-              -floop-block \
-              -floop-nest-optimize
-            ifneq ($(GRAPHITE_UNROLL_AND_JAM),)
-              BASE_GRAPHITE_KERNEL_FLAGS += \
-                -floop-unroll-and-jam
-            endif
-
-            # Check if there's already something set in a device make file somewhere.
-            ifndef GRAPHITE_KERNEL_FLAGS
-       export GRAPHITE_KERNEL_FLAGS := \
-                $(BASE_GRAPHITE_KERNEL_FLAGS)
-            else
-       export GRAPHITE_KERNEL_FLAGS := \
-                $(BASE_GRAPHITE_KERNEL_FLAGS) \
-                $(GRAPHITE_KERNEL_FLAGS)
-            endif
+          # Check if there's already something set in a device make file somewhere.
+          ifndef GRAPHITE_KERNEL_FLAGS
+     export GRAPHITE_KERNEL_FLAGS := \
+              $(BASE_GRAPHITE_KERNEL_FLAGS)
+          else
+     export GRAPHITE_KERNEL_FLAGS := \
+              $(BASE_GRAPHITE_KERNEL_FLAGS) \
+              $(GRAPHITE_KERNEL_FLAGS)
           endif
         endif
       endif
@@ -246,51 +238,47 @@ export TARGET_ARCH_LIB_PATH := $(ANDROID_BUILD_TOP)/prebuilts/gcc/$(HOST_PREBUIL
         endif
       endif
 
-      # Skip kernel bits if TARGET_SM_KERNEL is not defined.
-      ifeq ($(strip $(TARGET_SM_KERNEL_DEFINED)),true)
+      # Path to kernel toolchain
+      SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-$(TARGET_SM_KERNEL)
+      SM_KERNEL := $(shell $(SM_KERNEL_PATH)/bin/aarch64-gcc --version)
 
-        # Path to kernel toolchain
-        SM_KERNEL_PATH := prebuilts/gcc/$(HOST_PREBUILT_TAG)/aarch64/aarch64-$(TARGET_SM_KERNEL)
-        SM_KERNEL := $(shell $(SM_KERNEL_PATH)/bin/aarch64-gcc --version)
+      ifneq ($(filter %sabermod,$(SM_KERNEL)),)
+        SM_KERNEL_NAME := $(filter %sabermod,$(SM_KERNEL))
+        SM_KERNEL_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_KERNEL))
+        SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
+        SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
 
-        ifneq ($(filter %sabermod,$(SM_KERNEL)),)
-          SM_KERNEL_NAME := $(filter %sabermod,$(SM_KERNEL))
-          SM_KERNEL_DATE := $(filter 20140% 20141% 20150% 20151%,$(SM_KERNEL))
-          SM_KERNEL_STATUS := $(filter (release) (prerelease) (experimental),$(SM_KERNEL))
-          SM_KERNEL_VERSION := $(SM_KERNEL_NAME)-$(SM_KERNEL_DATE)-$(SM_KERNEL_STATUS)
+        # Make dependent on -O3 optimizations.
+        # These are extra loop optmizations, that act as helpers for -O3 and other loop optimization flags.
+        ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
 
-          # Make dependent on -O3 optimizations.
-          # These are extra loop optmizations, that act as helpers for -O3 and other loop optimization flags.
-          ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+          # Graphite flags for kernel
 
-            # Graphite flags for kernel
+          # Some graphite flags are only available for certain gcc versions
+   export GRAPHITE_UNROLL_AND_JAM := $(filter 5.1.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
 
-            # Some graphite flags are only available for certain gcc versions
-     export GRAPHITE_UNROLL_AND_JAM := $(filter 5.1.x-sabermod 6.0.x-sabermod,$(SM_KERNEL))
+          BASE_GRAPHITE_KERNEL_FLAGS := \
+            -fgraphite \
+            -fgraphite-identity \
+            -floop-flatten \
+            -ftree-loop-linear \
+            -floop-interchange \
+            -floop-strip-mine \
+            -floop-block \
+            -floop-nest-optimize
+          ifneq ($(GRAPHITE_UNROLL_AND_JAM),)
+            BASE_GRAPHITE_KERNEL_FLAGS += \
+              -floop-unroll-and-jam
+          endif
 
-            BASE_GRAPHITE_KERNEL_FLAGS := \
-              -fgraphite \
-              -fgraphite-identity \
-              -floop-flatten \
-              -ftree-loop-linear \
-              -floop-interchange \
-              -floop-strip-mine \
-              -floop-block \
-              -floop-nest-optimize
-            ifneq ($(GRAPHITE_UNROLL_AND_JAM),)
-              BASE_GRAPHITE_KERNEL_FLAGS += \
-                -floop-unroll-and-jam
-            endif
-
-            # Check if there's already something set in a device make file somewhere.
-            ifndef GRAPHITE_KERNEL_FLAGS
-       export GRAPHITE_KERNEL_FLAGS := \
-                $(BASE_GRAPHITE_KERNEL_FLAGS)
-            else
-       export GRAPHITE_KERNEL_FLAGS := \
-                $(BASE_GRAPHITE_KERNEL_FLAGS) \
-                $(GRAPHITE_KERNEL_FLAGS)
-            endif
+          # Check if there's already something set in a device make file somewhere.
+          ifndef GRAPHITE_KERNEL_FLAGS
+     export GRAPHITE_KERNEL_FLAGS := \
+              $(BASE_GRAPHITE_KERNEL_FLAGS)
+          else
+     export GRAPHITE_KERNEL_FLAGS := \
+              $(BASE_GRAPHITE_KERNEL_FLAGS) \
+              $(GRAPHITE_KERNEL_FLAGS)
           endif
         endif
       endif

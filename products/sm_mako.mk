@@ -24,10 +24,6 @@ endif
 ifeq ($(strip $(HOST_OS)),linux)
 
   # Sabermod configs
-  TARGET_ARCH := arm
-  TARGET_SM_KERNEL := 4.9
-  MAKO_THREADS := 4
-  PRODUCT_THREADS := $(MAKO_THREADS)
   ENABLE_STRICT_ALIASING := true
 export ENABLE_PTHREAD := false
 
@@ -44,7 +40,6 @@ ifeq ($(strip $(ENABLE_STRICT_ALIASING)),true)
   # strict-aliasing kernel flags
 export KERNEL_STRICT_FLAGS := \
          -fstrict-aliasing \
-         -Wstrict-aliasing=3 \
          -Werror=strict-aliasing
 
   # Enable strict-aliasing kernel flags
