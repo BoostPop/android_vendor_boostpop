@@ -50,3 +50,6 @@ include vendor/boostpop/configs/media.mk
 # Inlcude boost extra 
 include vendor/boostpop/configs/boost_extras.mk
 
+# Inherit sabermod vendor
+SM_VENDOR := vendor/sm
+include $(SM_VENDOR)/Main.mk
