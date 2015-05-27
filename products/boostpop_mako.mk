@@ -15,9 +15,6 @@
 # Inherit AOSP device configuration for mako
 $(call inherit-product, device/lge/mako/full_mako.mk)
 
-# Inherit sabermod device configuration
-include vendor/boostpop/products/sm_mako.mk
-
 # Inherit common product files
 $(call inherit-product, vendor/boostpop/boostpop_main.mk)
 
