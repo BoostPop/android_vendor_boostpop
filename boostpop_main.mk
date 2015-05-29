@@ -22,9 +22,9 @@ export VENDOR := boost
 
 # Version info
 ROM_VERSION_MAJOR := 3
-ROM_VERSION_MINOR := 5
-ROM_VERSION_TAG := beta
-ROM_VERSION_RELEASE :=
+ROM_VERSION_MINOR := 5-milestone
+ROM_VERSION_TAG := milestone
+ROM_VERSION_RELEASE :=true
 
 # Set 1 to use precompiled chromium
 USE_PREBUILT_CHROMIUM := 1
