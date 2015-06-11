@@ -30,10 +30,10 @@ ROM_VERSION_RELEASE :=true
 USE_PREBUILT_CHROMIUM := 1
 
 # Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
-TARGET_USES_BLOCK_BASED_OTA := true
+export TARGET_USES_BLOCK_BASED_OTA := true
 
 # Use deoxed build for debug
-TARGET_USES_DEOXPREOT_OTA := true 
+export TARGET_USES_DEOXPREOT_OTA := true 
 
 # Include BoostPop version
 include vendor/boostpop/configs/version.mk

@@ -41,7 +41,6 @@
         <item>screenshot</item>
         <item>users</item>
         <item>silent</item>
-        <!--<item>screenshot</item>-->
     </string-array>
 
     <!-- Disable stock OTA components if installed -->
