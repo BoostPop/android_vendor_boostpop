@@ -21,19 +21,19 @@ PRODUCT_DEVICE := generic
 export VENDOR := boost
 
 # Version info
-ROM_VERSION_MAJOR := 3
-ROM_VERSION_MINOR := 5-milestone
-ROM_VERSION_TAG := milestone
-ROM_VERSION_RELEASE :=true
+ROM_VERSION_MAJOR := 4
+ROM_VERSION_MINOR := 0.2
+ROM_VERSION_TAG := beta
+ROM_VERSION_RELEASE := false
 
 # Set 1 to use precompiled chromium
 USE_PREBUILT_CHROMIUM := 1
 
 # Block based ota flag default to off to get old style ota zip back (To get back block based zip, just enable to true.)
-export TARGET_USES_BLOCK_BASED_OTA := true
+export TARGET_USES_BLOCK_BASED_OTA := false 
 
 # Use deoxed build for debug
-export TARGET_USES_DEOXPREOT_OTA := true 
+export TARGET_USES_DEOXPREOT_OTA := false 
 
 # Include BoostPop version
 include vendor/boostpop/configs/version.mk
