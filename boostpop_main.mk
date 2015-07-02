@@ -22,7 +22,7 @@ export VENDOR := boost
 
 # Version info
 ROM_VERSION_MAJOR := 4
-ROM_VERSION_MINOR := 0.2
+ROM_VERSION_MINOR := 0.5
 ROM_VERSION_TAG := beta
 ROM_VERSION_RELEASE := false
 
